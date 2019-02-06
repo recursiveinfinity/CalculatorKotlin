@@ -1,5 +1,6 @@
 package com.example.sidd.calculatorkotlin
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         btnAdd.setOnClickListener(this)
         btnSave.setOnClickListener(this)
         btnLogs.setOnClickListener(this)
+        readName()
     }
 
     private fun handleAdd() {
@@ -31,6 +33,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when(view?.id) {
             R.id.btnAdd -> handleAdd()
             R.id.btnLogs -> handleLogs()
+            R.id.btnSave -> handleSaveClick()
+        }
+    }
+
+    private fun handleSaveClick() {
+        val sharedPreferences = getSharedPreferences("MySharedPreferences",
+            Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("Name", etName.text.toString())
+        editor.apply()
+        readName()
+    }
+
+    private fun readName() {
+        val sharedPreferences = getSharedPreferences("MySharedPreferences",
+            Context.MODE_PRIVATE)
+        val name = sharedPreferences.getString("Name", "")
+        if(name.isNotEmpty()) {
+            tvResult.text = getString(R.string.greeting, name)
         }
     }
 
