@@ -1,32 +1,31 @@
 package com.example.sidd.calculatorkotlin
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-
-    val hello: String? = null
-
+    val logs = arrayListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        btnAdd.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-        })
-
-        btnAdd.setOnClickListener { handleAdd() }
+        btnAdd.setOnClickListener(this)
+        btnSave.setOnClickListener(this)
+        btnLogs.setOnClickListener(this)
     }
 
     private fun handleAdd() {
-        hello?.length
-        hello?.length!!
+        val a = etNumberOne.text.toString()
+        val b = etNumberTwo.text.toString()
+        if (a.isNotEmpty() && b.isNotEmpty()) {
+            val result = (a.toInt() + b.toInt()).toString()
+            tvResult.text = result
+            logs.add(result)
+        }
     }
+
 
     override fun onClick(view: View?) {
         when(view?.id) {
@@ -36,6 +35,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun handleLogs() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent(this, LogsActivity::class.java)
+        intent.putStringArrayListExtra("Logs", logs)
+        startActivity(intent)
     }
 }
